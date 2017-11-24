@@ -31,6 +31,10 @@ const LikeSchema = new SimpleSchema({
         },
         denyUpdate: true,
     },
+    direction:{
+         type: Integer,
+        defaultValue:1
+    }
 });
 
 /**
