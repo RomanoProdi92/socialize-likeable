@@ -14,7 +14,11 @@ LikesCollection.allow({
 LikesCollection.after.insert(function afterInsert(userId, like) {
     // after a successful like, increment the linked object's _likeCount property
     const collection = this.transform().getCollectionForParentLink();
-    userId && collection && collection.update(like.linkedObjectId, { $inc: { _likeCount: 1 } });
+    if(like.direction==1){
+     userId && collection && collection.update(like.linkedObjectId, { $inc: { _likeCount: 1 } });
+    }else{
+     userId && collection && collection.update(like.linkedObjectId, { $inc: { _unlikeCount: 1 } });
+    }
 });
 
 LikesCollection.after.remove(function afterRemove(userId, like) {
