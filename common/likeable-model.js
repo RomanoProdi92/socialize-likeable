@@ -24,7 +24,7 @@ export const LikeableModel = Base => class extends Base { //eslint-disable-line
      */
     like() {
         new Like(this.getLinkObject()).save({
-            namespace: `${this._id}`,
+            namespace: `${this._id}`,direction:1
         });
     }
 
@@ -32,11 +32,8 @@ export const LikeableModel = Base => class extends Base { //eslint-disable-line
      * Remove a record from the likes collection that is linked to the model
      */
     unlike() {
-        // find and then call call instance.remove() since client
-        // is restricted to removing items by their _id
-        const like = LikesCollection.findOne({ userId: Meteor.userId(), linkedObjectId: this._id });
-        like && like.remove({
-            namespace: `${this._id}`,
+        new Like(this.getLinkObject()).save({
+            namespace: `${this._id}`,direction:0
         });
     }
 
@@ -60,7 +57,14 @@ export const LikeableModel = Base => class extends Base { //eslint-disable-line
         // This creates backwards compatibility for when we stored userId's in an array on the liked object
         return _.isArray(this._likeCount) ? this._likeCount.length : this._likeCount || 0;
     }
-
+    /**
+     * Get the total number of unlikes for the model
+     * @returns {Number} The total number of unlikes
+     */
+    unlikeCount() {
+        // This creates backwards compatibility for when we stored userId's in an array on the liked object
+        return _.isArray(this._likeCount) ? this._likeCount.length : this._likeCount || 0;
+    }
     /**
      * Check if the model is liked by a certain user
      * @param   {Object}  user A User instance to check against
@@ -77,6 +81,11 @@ export const LikeableModel = Base => class extends Base { //eslint-disable-line
 // attach this schema to it's collection as well.
 LikeableModel.LikeableSchema = new SimpleSchema({
     _likeCount: {
+        type: Number,
+        defaultValue: 0,
+        custom: SimpleSchema.denyUntrusted,
+    },
+    _unlikeCount: {
         type: Number,
         defaultValue: 0,
         custom: SimpleSchema.denyUntrusted,
