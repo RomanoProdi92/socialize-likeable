@@ -2,15 +2,10 @@
 
 A package for implementing models with Liking, Starring, or Favoriting capabilities.
 
-## Supporting the Project ##
-In the spirit of keeping this and all of the packages in the [Socialize](https://atmospherejs.com/socialize) set alive, I ask that if you find this package useful, please donate to it's development.
-
-[Bitcoin](https://www.coinbase.com/checkouts/4a52f56a76e565c552b6ecf118461287) / [Patreon](https://www.patreon.com/user?u=4866588) / [Paypal](https://www.paypal.me/copleykj)
-
 ## Installation ##
 
 ```shell
-$ meteor add socialize:likeable
+$ meteor add romanoprodi92:likeable
 ```
 
 ## Usage ##
@@ -58,6 +53,7 @@ foundProduct.unlike()
 
 //and retrieve the number of times it was liked
 foundProduct.likeCount();
+foundProduct.unlikeCount();
 
 //We can even query to see if a certain user has liked this product
 foundProduct.islikedBy(Meteor.user()); //Publication of proper data necessary if querying client side of course
